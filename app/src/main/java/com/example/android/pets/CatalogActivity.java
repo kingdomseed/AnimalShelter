@@ -1,5 +1,6 @@
 package com.example.android.pets;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,6 +20,8 @@ import com.example.android.pets.data.PetDbHelper;
  */
 public class CatalogActivity extends AppCompatActivity {
 
+    private PetDbHelper petDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -34,6 +37,13 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        petDbHelper = new PetDbHelper(this);
+        displayDatabaseInfo();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         displayDatabaseInfo();
     }
 
@@ -66,6 +76,18 @@ public class CatalogActivity extends AppCompatActivity {
         }
     }
 
+    private void InsertPet()
+    {
+        SQLiteDatabase db = petDbHelper.getWritableDatabase();
+        ContentValues petValues = new ContentValues();
+        petValues.put(PetEntry.COLUMN_PET_NAME, "Miliani");
+        petValues.put(PetEntry.COLUMN_PET_BREED, "Shepherd");
+        petValues.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_FEMALE);
+        petValues.put(PetEntry.COLUMN_PET_WEIGHT, 45);
+
+        long newRowId = db.insert(PetEntry.TABLE_NAME, null, petValues);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
@@ -80,7 +102,8 @@ public class CatalogActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
-                // Do nothing for now
+                InsertPet();
+                displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
