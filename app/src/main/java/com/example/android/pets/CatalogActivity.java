@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,14 +14,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.pets.data.PetContract.PetEntry;
-import com.example.android.pets.data.PetDbHelper;
 
 /**
  * Displays list of pets that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity {
-
-    private PetDbHelper petDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +35,6 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        petDbHelper = new PetDbHelper(this);
         displayDatabaseInfo();
     }
 
@@ -107,14 +104,14 @@ public class CatalogActivity extends AppCompatActivity {
 
     private void InsertPet()
     {
-        SQLiteDatabase db = petDbHelper.getWritableDatabase();
+        Uri uri;
         ContentValues petValues = new ContentValues();
         petValues.put(PetEntry.COLUMN_PET_NAME, "Miliani");
         petValues.put(PetEntry.COLUMN_PET_BREED, "Shepherd");
         petValues.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_FEMALE);
         petValues.put(PetEntry.COLUMN_PET_WEIGHT, 45);
 
-        long newRowId = db.insert(PetEntry.TABLE_NAME, null, petValues);
+        uri = getContentResolver().insert(PetEntry.CONTENT_URI, petValues);
     }
 
     @Override
