@@ -50,7 +50,6 @@ public class PetProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         petDbHelper = new PetDbHelper(getContext());
-
         return true;
     }
 

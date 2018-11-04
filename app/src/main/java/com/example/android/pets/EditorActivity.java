@@ -47,8 +47,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private static final int EXISTING_PET_LOADER = 0;
 
-    PetCursorAdapter petCursorAdapter;
-
     private boolean mPetHasChanged = false;
 
     private Uri currentPetUri;
@@ -307,7 +305,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
         // Since the editor shows all pet attributes, define a projection that contains
